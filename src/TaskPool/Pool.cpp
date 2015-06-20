@@ -1,9 +1,8 @@
 #include <malloc.h>
 #include "./Pool.h"
 
-CPool::CPool(unsigned int l_NumThreads) : m_CondVar(l_NumThreads), m_CondVarTaskFinished(l_NumThreads)
+CPool::CPool()
 {
-    m_NumOfTreads = l_NumThreads;
     m_pThreadsHandle = 0;
     m_ThreadRun = true;
 }
@@ -28,9 +27,9 @@ CPool::~CPool(void)
 
 void CPool::Init(unsigned int l_NumThreads)
 {
-    if(m_NumOfTreads == 0 && l_NumThreads == 0) return;
+    if(l_NumThreads == 0) return;
 
-    m_NumOfTreads = (l_NumThreads > 0) ? l_NumThreads : m_NumOfTreads;
+    m_NumOfTreads = l_NumThreads;
     m_pThreadsHandle = (pthread_t *) malloc (m_NumOfTreads * sizeof(pthread_t));
 
     for(unsigned int i = 0; i < m_NumOfTreads; ++i)

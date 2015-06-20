@@ -20,7 +20,7 @@ class CPool
         CConditionVarible   m_CondVarTaskFinished;
 
     public:
-        CPool  (unsigned int l_NumThreads);
+        CPool  (void);
         ~CPool (void);
 
         void                Init            (unsigned int l_NumThreads = 0);

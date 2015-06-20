@@ -4,7 +4,7 @@
 class CConditionVarible
 {
     public:
-        CConditionVarible  (unsigned int l_NumThreads);
+        CConditionVarible  (void);
         ~CConditionVarible (void);
 
         void Sleep   (pthread_mutex_t &l_CriticalSenction);

@@ -1,6 +1,6 @@
 #include "./ContitionVariable.h"
 
-CConditionVarible::CConditionVarible(unsigned int l_NumThreads)
+CConditionVarible::CConditionVarible()
 {
     pthread_cond_init(&m_ConditionVariable, 0);
 }

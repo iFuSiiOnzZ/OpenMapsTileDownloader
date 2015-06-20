@@ -1,7 +1,6 @@
 #include <vector>
-#include <stdio.h>
 #include <tgmath.h>
-
+#include <unistd.h>
 
 #include "./TaskPool/Pool.h"
 #include "./OpenMaps/OpenMapsDownload.h"
@@ -16,8 +15,8 @@ int main(int argc, char *argv[])
 {
     std::vector<CTask *> l_Tasks;
 
-    CPool l_TaskPool(8);
-    l_TaskPool.Init();
+    CPool l_TaskPool;
+    l_TaskPool.Init(sysconf(_SC_NPROCESSORS_ONLN));
 
     LatLng l_StartPoint = {41.50443, 2.09167};
     LatLng l_EndPoint = {41.49723, 2.11897};
