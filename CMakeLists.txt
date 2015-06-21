@@ -15,4 +15,7 @@ src/TaskPool/Utilities/Mutex.h
 src/TaskPool/Utilities/Mutex.cpp
 
 src/TaskPool/Utilities/ContitionVariable.h
-src/TaskPool/Utilities/ContitionVariable.cpp src/OpenMaps/OpenMapsDownload.cpp src/OpenMaps/OpenMapsDownload.h)
+src/TaskPool/Utilities/ContitionVariable.cpp
+
+src/OpenMaps/OpenMapsDownload.h
+src/OpenMaps/OpenMapsDownload.cpp)

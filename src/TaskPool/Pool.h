@@ -10,7 +10,7 @@ class CPool
 {
     private:
         std::list<CTask *>  m_pTasks;
-        pthread_t              *m_pThreadsHandle;
+        pthread_t          *m_pThreadsHandle;
 
         unsigned int        m_NumOfTreads;
         bool                m_ThreadRun;

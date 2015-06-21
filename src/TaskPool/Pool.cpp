@@ -10,15 +10,16 @@ CPool::CPool()
 CPool::~CPool(void)
 {
     if(m_pThreadsHandle == 0) return;
+
     m_ThreadRun = false;
     m_pTasks.clear();
 
     m_CondVar.WakeAll();
     m_CondVarTaskFinished.WakeAll();
 
-    for(int i = 0; i < m_NumOfTreads; i++)
+    for(int i = 0; i < m_NumOfTreads; ++i)
     {
-        pthread_join(*(m_pThreadsHandle + 1), 0);
+        pthread_join(*(m_pThreadsHandle + i), 0);
     }
 
     free(m_pThreadsHandle);

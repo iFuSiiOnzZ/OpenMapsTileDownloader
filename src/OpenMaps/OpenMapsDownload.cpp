@@ -25,8 +25,8 @@ OpenMapsDownload::OpenMapsDownload(char *l_TileServer, char *l_PathToSave, LatLn
     strncpy(m_TileServer, l_TileServer, 256);
     strncpy(m_PathToSave, l_PathToSave, 256);
 
-    m_Coord.m_Lat = l_Coord->m_Lat;
-    m_Coord.m_Lng = l_Coord->m_Lng;
+    m_Coord.Lat = l_Coord->Lat;
+    m_Coord.Lng = l_Coord->Lng;
 
     Coord2Tile(&m_Coord, &m_Tile, m_Zoom);
 }
@@ -44,8 +44,8 @@ OpenMapsDownload::OpenMapsDownload(char *l_TileServer, char *l_PathToSave, Tile 
 
 void OpenMapsDownload::Coord2Tile(LatLng *l_LatLng, Tile *l_Tile, int l_Zoom)
 {
-    l_Tile->x = (int)(floor((l_LatLng->m_Lng + 180.0) / 360.0 * pow(2.0, l_Zoom)));
-    l_Tile->y = (int)(floor((1.0 - log(tan(l_LatLng->m_Lat * M_PI/180.0) + 1.0 / cos(l_LatLng->m_Lat * M_PI/180.0)) / M_PI) / 2.0 * pow(2.0, l_Zoom)));
+    l_Tile->x = (int)(floor((l_LatLng->Lng + 180.0) / 360.0 * pow(2.0, l_Zoom)));
+    l_Tile->y = (int)(floor((1.0 - log(tan(l_LatLng->Lat * M_PI/180.0) + 1.0 / cos(l_LatLng->Lat * M_PI/180.0)) / M_PI) / 2.0 * pow(2.0, l_Zoom)));
 }
 
 void OpenMapsDownload::Execute()
@@ -84,16 +84,16 @@ void OpenMapsDownload::Execute()
     int l_SZ = sprintf(l_GET, "GET /%d/%d/%d.png  HTTP/1.0\r\n\r\n", m_Zoom, m_Tile.x, m_Tile.y);
     write(l_SocketID, l_GET, l_SZ);
 
-    char l_PathToSave[256] = {0};
+    char l_PathToSave[256] = { 0 };
     char *l_LastSlash = strrchr(m_PathToSave, '/');
     if(l_LastSlash != 0 && *(l_LastSlash + 1) == '\0') *l_LastSlash = '\0';
 
     sprintf(l_PathToSave, "%s/%d/%d/", m_PathToSave, m_Zoom, m_Tile.x);
 
-    char l_MakeDir[256] = {0}; sprintf(l_MakeDir, "mkdir -p %s", l_PathToSave);
+    char l_MakeDir[256] = { 0 }; sprintf(l_MakeDir, "mkdir -p %s", l_PathToSave);
     system(l_MakeDir);
 
-    char l_FileName[32] = {0}; sprintf(l_FileName, "%d.png", m_Tile.y);
+    char l_FileName[32] = { 0 }; sprintf(l_FileName, "%d.png", m_Tile.y);
     strncat(l_PathToSave, l_FileName, 256 - strlen(l_PathToSave));
 
     if(FILE *l_Found = fopen(l_PathToSave, "r"))
@@ -109,11 +109,13 @@ void OpenMapsDownload::Execute()
     }
 
     printf("Downloading: %s/%d/%d/%d.png\n", m_TileServer,m_Zoom, m_Tile.x, m_Tile.y);
+    bool l_HeaderFound = false;
 
     for(int r = read(l_SocketID, l_Buffer, BUFFER_SIZE); r > 0; r = read(l_SocketID, l_Buffer, BUFFER_SIZE))
     {
-        char *l_NoHeader = strstr(l_Buffer, "\r\n\r\n");
+        char *l_NoHeader = (!l_HeaderFound) ? strstr(l_Buffer, "\r\n\r\n") : 0;
         l_NoHeader = (l_NoHeader > 0)? l_NoHeader + 4 : l_Buffer;
+        if(l_NoHeader - l_Buffer) l_HeaderFound = true;
 
         fwrite(l_NoHeader, sizeof(char), r - (l_NoHeader - l_Buffer), l_pFile);
         bzero(l_Buffer, 256);

@@ -7,8 +7,8 @@
 
     typedef struct LatLng
     {
-        double m_Lat;
-        double m_Lng;
+        double Lat;
+        double Lng;
     }LatLng;
 
     typedef struct Tile
@@ -16,5 +16,11 @@
         unsigned int x;
         unsigned int y;
     }Tile;
+
+    typedef struct Zoom
+    {
+        unsigned int Min;
+        unsigned int Max;
+    }Zoom;
 
 #endif //OPENMAPSTILEDOWNLOADER_DEFINES_H
